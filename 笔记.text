@@ -1,0 +1,32 @@
+################分库分表笔记sql
+create database `order_db` character set `utf8` collate `utf8_general_ci`;
+
+drop table if exists `t_order_1`;
+create table `t_order_1` (
+	`order_id` bigint(20) not null comment '订单ID',
+	`price` decimal(10,2) not null comment '订单价格',
+	`user_id` bigint(20) not null comment '下单用户ID',
+	`status` varchar(50) character set `utf8` collate `utf8_general_ci` not null comment '订单状态',
+	primary key (`order_id`) using btree
+) engine = innoDB character set = utf8 collate = utf8_general_ci row_format = dynamic;
+
+drop table if exists `t_order_2`;
+create table `t_order_2` (
+	`order_id` bigint(20) not null comment '订单ID',
+	`price` decimal(10,2) not null comment '订单价格',
+	`user_id` bigint(20) not null comment '下单用户ID',
+	`status` varchar(50) character set `utf8` collate `utf8_general_ci` not null comment '订单状态',
+	primary key (`order_id`) using btree
+) engine = innoDB character set = utf8 collate = utf8_general_ci row_format = dynamic;
+
+
+
+******************************************************************************************************************
+
+
+<!-- https://mvnrepository.com/artifact/org.apache.shardingsphere/sharding-jdbc-spring-boot-starter -->
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+    <version>4.1.1</version>
+</dependency>
