@@ -30,3 +30,10 @@ create table `t_order_2` (
     <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
     <version>4.1.1</version>
 </dependency>
+
+1.编写程序
+    1.分片规则的配置：配置类容主要是
+        数据源m1、
+        主键生成策略、order_id，SNOWFLAKE
+        配置数据节点、m1.t_order_$->{1..2}
+        分片键和策略、order_id，algorithm-expression: t_order_$->{order_id % 2 +1}
