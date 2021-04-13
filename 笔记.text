@@ -47,3 +47,16 @@ create table `t_order_2` (
                 如果我们用的jar包是druid-spring-boot-starter，则在启动类上排除druid自动配置
                 @SpringBootApplication(exclude = {DruidDataSourceAutoConfigure.class})
             解决方式2：不用druid-spring-boot-starter,改为druid
+
+3.使用@Configuration配置类配置分片规则时，程序会报错org.apache.shardingsphere.shardingjdbc.spring.boot.SpringBootConfiguration 数据源为空
+    原因是sharding-jdbc读取分片规则配置时默认是从配置文件中读取配置：
+        源码：
+            @ConditionalOnProperty(
+                prefix = "spring.shardingsphere",
+                name = {"enabled"},
+                havingValue = "true",
+                matchIfMissing = true
+            )
+            @AutoConfigureBefore({DataSourceAutoConfiguration.class})
+            public class SpringBootConfiguration implements EnvironmentAware {...}
+    解决方案就是在启动类中过滤掉这个类 exclude  SpringBootConfiguration
