@@ -27,6 +27,7 @@ public interface OrderDao {
      * 这里表写逻辑表
      * 根据ID列表查询订单,复杂的失去了使用<script>标签,传入列表查询使用foreach
      * 弹幕问题：1.如果查询的条件不是主键呢2.如果分页查询怎么办
+     * 答案1： 不携带分片键的SQL则采用广播路由
      */
     @Select("<script>" +
                 "select * from t_order t where t.order_id in " +
