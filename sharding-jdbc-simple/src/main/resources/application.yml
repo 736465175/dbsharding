@@ -11,12 +11,21 @@ spring:
   #对sharding-jdbc分片规则设置
   #定义数据源
   shardingsphere:
+    props: #打开sharding-jdbc日志
+      sql:
+        show: true
     datasource:
-      names: m1
+      names: m1,m2
       m1:
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/order_db?useUnicode=true
+        url: jdbc:mysql://localhost:3306/order_db_1?useUnicode=true
+        username: root
+        password: 123456
+      m2:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/order_db_2?useUnicode=true
         username: root
         password: 123456
     sharding:
@@ -29,14 +38,15 @@ spring:
           #指定t_order表的数据分布情况，配置数据节点; $->{1..2}表达式，表示 $ 可以从1开始取到2
           actual-data-nodes: m1.t_order_$->{1..2}
           #接下来配置分片算法;指定t_order表的分片策略，分片策略包含分片键和分片算法
-          table-strategy:
-            inline:
+          table-strategy: #分表策略
+            inline: #分片策略标志
               sharding-column: order_id
               algorithm-expression: t_order_$->{order_id % 2 +1}
-    #打开sharding-jdbc日志
-    props:
-      sql:
-        show: true
+          database-strategy: #分库策略
+            inline: #分库策略标志
+              sharding-column: user_id
+              algorithm-expression: m$->{user_id % 2 +1}
+
 
 
 mybatis:
