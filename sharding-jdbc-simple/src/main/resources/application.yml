@@ -36,14 +36,14 @@ spring:
             type: SNOWFLAKE
             column: order_id
           #指定t_order表的数据分布情况，配置数据节点; $->{1..2}表达式，表示 $ 可以从1开始取到2
-          actual-data-nodes: m1.t_order_$->{1..2}
+          actual-data-nodes: m$->{1..2}.t_order_$->{1..2}
           #接下来配置分片算法;指定t_order表的分片策略，分片策略包含分片键和分片算法
           table-strategy: #分表策略
-            inline: #分片策略标志
+            inline: #行表达式分片策略
               sharding-column: order_id
               algorithm-expression: t_order_$->{order_id % 2 +1}
           database-strategy: #分库策略
-            inline: #分库策略标志
+            inline: #行表达式分片策略
               sharding-column: user_id
               algorithm-expression: m$->{user_id % 2 +1}
 

@@ -19,7 +19,8 @@ create table `t_order_2` (
 	primary key (`order_id`) using btree
 ) engine = innoDB character set = utf8 collate = utf8_general_ci row_format = dynamic;
 
-
+create database `order_db_1` character set `utf8` collate `utf8_general_ci`;
+create database `order_db_2` character set `utf8` collate `utf8_general_ci`;
 
 ******************************************************************************************************************
 
@@ -119,8 +120,9 @@ create table `t_order_2` (
 
 10.水平分库：
     把同一个表的数据按照一定规则拆到不同的数据库相同的表中，每个库可以放在不同的服务器上。就需要配置分库策略
-
-
+    create database `order_db_1` character set `utf8` collate `utf8_general_ci`;
+    create database `order_db_2` character set `utf8` collate `utf8_general_ci`;
+    分库策略配置参考yml
 
 
 

@@ -17,7 +17,7 @@ public class OrderTest {
     private OrderDao orderDao;
     @Test
     public void testInsertOrder(){
-        for(int i = 1; i < 20; i++){
+        for(int i = 1; i < 11; i++){
             orderDao.insertOrder( new BigDecimal(i), 1L, "SUCCESS");
         }
     }
@@ -26,9 +26,7 @@ public class OrderTest {
     public void selectOrderByIds(){
         List<Long> ids = new ArrayList<>();
         ids.add(588857808531750912L);
-        ids.add(588857808439476224L);
         ids.add(588857808422699009L);
-        ids.add(588857808624025601L);
         List<Map<String,Object>> result = orderDao.selectOrderByIds(ids);
         System.out.println(result);
     }
