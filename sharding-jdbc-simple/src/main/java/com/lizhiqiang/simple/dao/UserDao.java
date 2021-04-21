@@ -35,4 +35,14 @@ public interface UserDao {
                 "</foreach>" +
             "</script>")
     List<Map<String,Object>> selectUserByIds(@Param("userIds")List<Long> userIds);
+
+    @Select("<script>" +
+                " select t.*,d.value from t_user t " +
+                " left join t_dict d on d.code = t.user_type " +
+                " where t.user_id in " +
+                " <foreach collection='userIds' open='(' separator=',' close=')' item='id'> " +
+                    "#{id}" +
+                " </foreach> " +
+            "</script>")
+    List<Map<String,Object>> selectUserInfoByIds(@Param("userIds")List<Long> userIds);
 }

@@ -30,4 +30,14 @@ public class UserTest {
         System.out.println(result);
     }
 
+    //关联查询
+    @Test
+    public void selectUserInfoByIds(){
+        List<Long> ids = new ArrayList<>();
+        ids.add(591624376273600512L);
+        ids.add(591624377129238529L);
+        List<Map<String,Object>> result = userDao.selectUserInfoByIds(ids);
+        System.out.println(result);
+    }
+
 }

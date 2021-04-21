@@ -159,7 +159,7 @@ create table `t_dict` (
           #指定公共表
           broadcast-tables: t_dict
     3.单独查询广播表查不出数据？
-    4.关联查询
+    4.业务表关联公共表查询
 
 
 
