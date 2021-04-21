@@ -41,4 +41,26 @@ public class OrderTest {
         System.out.println(result);
     }
 
+    //关联t_user表 ,测试失败
+    @Test
+    public void selectOrderByIdsAndUserIdUnionUser(){
+        List<Long> ids = new ArrayList<>();
+        ids.add(591593198632042496L);
+        ids.add(591593200062300160L);
+        Long userId = 591624376273600512L;
+        List<Map<String,Object>> result = orderDao.selectOrderByIdsAndUserIdUnionUser(ids, userId);
+        System.out.println(result);
+    }
+
+    //关联t_user表和广播表t_dict,测试失败
+    @Test
+    public void selectOrderByIdsAndUserIdUnionUserAndDict(){
+        List<Long> ids = new ArrayList<>();
+        ids.add(591584576665550849L);
+        ids.add(591584578028699648L);
+        Long userId = 2L;
+        List<Map<String,Object>> result = orderDao.selectOrderByIdsAndUserIdUnionUserAndDict(ids, userId);
+        System.out.println(result);
+    }
+
 }

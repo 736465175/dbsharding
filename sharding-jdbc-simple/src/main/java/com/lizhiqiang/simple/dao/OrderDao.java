@@ -48,7 +48,32 @@ public interface OrderDao {
                 "<foreach collection='orderIds' open='(' separator=',' close=')' item='id'>" +
                     "#{id}" +
                 "</foreach>" +
-                " and user_id = #{userId}"  +
+                " and t.user_id = #{userId}"  +
             "</script>")
     List<Map<String,Object>> selectOrderByIdsAndUserId(@Param("orderIds")List<Long> orderIds, @Param("userId")Long userId);
+
+    //关联t_user表
+    @Select("<script>" +
+                "select t.*,u.fullname from t_order t" +
+                " left join t_user u on u.user_id = t.user_id" +
+                " where t.order_id in " +
+                "<foreach collection='orderIds' open='(' separator=',' close=')' item='id'>" +
+                    "#{id}" +
+                "</foreach>" +
+                " and t.user_id = #{userId}"  +
+            "</script>")
+    List<Map<String,Object>> selectOrderByIdsAndUserIdUnionUser(@Param("orderIds")List<Long> orderIds, @Param("userId")Long userId);
+
+    //关联t_user表和广播表t_dict
+    @Select("<script>" +
+                "select t.*,u.fullname,d.value from t_order t" +
+                " left join t_user u on u.user_id = t.user_id" +
+                " left join t_dict d on u.user_type = d.code" +
+                " where t.order_id in " +
+                "<foreach collection='orderIds' open='(' separator=',' close=')' item='id'>" +
+                    "#{id}" +
+                "</foreach>" +
+                " and t.user_id = #{userId}"  +
+            "</script>")
+    List<Map<String,Object>> selectOrderByIdsAndUserIdUnionUserAndDict(@Param("orderIds")List<Long> orderIds, @Param("userId")Long userId);
 }
