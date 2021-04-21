@@ -34,7 +34,18 @@ create table `t_user` (
 	primary key (`user_id`) using btree
 ) engine = innoDB character set = utf8 collate = utf8_general_ci row_format = dynamic;
 
-******************************************************************************************************************
+--公共表(order_db_1,order_db_2,user_db)
+drop table if exists `t_dict`;
+create table `t_dict` (
+	`dict_id` bigint(20) not null comment '字典ID',
+	`type` varchar(50) character set `utf8` collate `utf8_general_ci` not null comment '字典类型',
+	`code` varchar(50) character set `utf8` collate `utf8_general_ci` not null comment '字典编码',
+	`value` varchar(50) character set `utf8` collate `utf8_general_ci` not null comment '字典值',
+	primary key (`dict_id`) using btree
+) engine = innoDB character set = utf8 collate = utf8_general_ci row_format = dynamic;
+
+
+************************************************************************************************************
 
 
 <!-- https://mvnrepository.com/artifact/org.apache.shardingsphere/sharding-jdbc-spring-boot-starter -->
@@ -139,11 +150,16 @@ create table `t_user` (
 
 11.垂直分库：
     1.按照业务将表进行分类，比如分布式微服务框架：在系统设计时就要分好。
-    2.配置数据源、数据节点
+    2.配置数据源、数据节点、分片策略(预留水平分表策略)
 
-
-
-
+12.公共表：
+    1.sharding-jdbc会向每个数据节点插入、更新、删除发出操作，保证每个节点公共表里的数据一致。
+    2.配置分片策略：
+        sharding:
+          #指定公共表
+          broadcast-tables: t_dict
+    3.单独查询广播表查不出数据？
+    4.关联查询
 
 
 

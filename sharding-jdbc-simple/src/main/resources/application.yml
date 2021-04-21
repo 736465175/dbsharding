@@ -35,6 +35,9 @@ spring:
         username: root
         password: 123456
     sharding:
+      #指定公共表
+      broadcast-tables: t_dict
+
       tables:
         t_order: #是逻辑表，不是真实的表
           #指定t_order表的主键生成策略为SNOWFLAKE，也是全局主键
