@@ -161,13 +161,31 @@ create table `t_dict` (
     3.单独查询广播表查不出数据？
     4.业务表关联公共表查询
 
-
-
-
-
-
-
-
+13.读写分离：
+    1.将数据库拆分为主库和从库，主库负责处理事务性的增删改操作，从库负责处理查询操作；能有避免由数据库更新导致的行锁。
+    2.主从架构：一主一从，一主多从，双主多从(主实现高可用)；主从之间有数据同步的机制
+    3.sharding-jdbc读写分离是根据SQL语义分析，将读操作和写操作分别路由到从库与主库。提供透明化的读写分离，不提供主
+        从数据库的数据同步。提供一主多从的读写分离配置。
+    4.mysql主从同步(windows)
+        1.新增MySQL实例
+            1.复制原有MySQL：D:\DevelopTools\mysql-5.6.49-winx64(作为主库)，
+               -> D:\DevelopTools\mysql-5.6.49-winx64-s1(作为从库)，并修改从库my.ini:
+                [client]
+                port=3307
+                default-character-set=utf8
+                [mysqld]
+                port=3307
+                character_set_server=utf8
+                #安装路径
+                basedir=D:\DevelopTools\mysql-5.6.49-winx64-s1
+                #数据路径
+                datadir=D:\DevelopTools\mysql-5.6.49-winx64-s1\data
+                sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+                [WinMySQLAdmin]
+                D:\DevelopTools\mysql-5.6.49-winx64-s1\bin\mysqld.exe
+            2.然后将从库安装为Windows服务cmd下：
+                D:\DevelopTools\mysql-5.6.49-winx64-s1\bin>
+                    mysqld install MySQLs1 --defaults-file="D:\DevelopTools\mysql-5.6.49-winx64-s1\my.ini"
 
 
 
