@@ -1,6 +1,6 @@
 ################分库分表笔记sql
 create database `order_db` character set `utf8` collate `utf8_general_ci`;
-
+--水平分库、表使用
 drop table if exists `t_order_1`;
 create table `t_order_1` (
 	`order_id` bigint(20) not null comment '订单ID',
@@ -19,8 +19,20 @@ create table `t_order_2` (
 	primary key (`order_id`) using btree
 ) engine = innoDB character set = utf8 collate = utf8_general_ci row_format = dynamic;
 
+--水平分库使用
 create database `order_db_1` character set `utf8` collate `utf8_general_ci`;
 create database `order_db_2` character set `utf8` collate `utf8_general_ci`;
+
+--垂直分库使用
+create database `user_db` character set `utf8` collate `utf8_general_ci`;
+
+drop table if exists `t_user`;
+create table `t_user` (
+	`user_id` bigint(20) not null comment '用户ID',
+	`fullname` varchar(255) character set `utf8` collate `utf8_general_ci` not null comment '用户姓名',
+	`user_type` char(1) default null comment '用户类型',
+	primary key (`user_id`) using btree
+) engine = innoDB character set = utf8 collate = utf8_general_ci row_format = dynamic;
 
 ******************************************************************************************************************
 
@@ -122,10 +134,12 @@ create database `order_db_2` character set `utf8` collate `utf8_general_ci`;
     把同一个表的数据按照一定规则拆到不同的数据库相同的表中，每个库可以放在不同的服务器上。就需要配置分库策略
     create database `order_db_1` character set `utf8` collate `utf8_general_ci`;
     create database `order_db_2` character set `utf8` collate `utf8_general_ci`;
-    分库策略配置参考yml
+    分库策略配置参考yml,以上实现了水平分开、水平分表
 
 
-
+11.垂直分库：
+    1.按照业务将表进行分类，比如分布式微服务框架：在系统设计时就要分好。
+    2.配置数据源、数据节点
 
 
 

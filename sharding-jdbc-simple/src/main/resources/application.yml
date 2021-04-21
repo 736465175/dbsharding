@@ -15,7 +15,7 @@ spring:
       sql:
         show: true
     datasource:
-      names: m1,m2
+      names: m1,m2,user
       m1:
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
@@ -26,6 +26,12 @@ spring:
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
         url: jdbc:mysql://localhost:3306/order_db_2?useUnicode=true
+        username: root
+        password: 123456
+      user:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/user_db?useUnicode=true
         username: root
         password: 123456
     sharding:
@@ -46,6 +52,16 @@ spring:
             inline: #行表达式分片策略
               sharding-column: user_id
               algorithm-expression: m$->{user_id % 2 +1}
+
+        t_user: #是逻辑表，垂直分库配置
+          actual-data-nodes: user.t_user #因为只有一个库一张表，没有水平分库分表，可以不指定全局主键,自己生成主键ID插入
+          key-generator:
+            type: SNOWFLAKE
+            column: user_id
+          table-strategy: #分表策略，即使没有分表也需要配置分表策略，预留后期可能分表
+            inline:
+              sharding-column: user_id
+              algorithm-expression: t_user
 
 
 
