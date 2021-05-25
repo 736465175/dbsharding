@@ -227,9 +227,9 @@ create table `t_dict` (
             5.设置从库向主库同步数据、并检查链路：数据库连接工具连接到从库库执行如下sql脚本
                 #先停止同步
                 STOP SLAVE;
-                #修改从库指向到主库，使用上一步记录的文件名以及位点
+                #修改从库指向到主库，使用上一步记录的文件名以及位点，不能是localhost，否则连不上主库
                 CHANGE MASTER TO
-                    master_host='localhost',
+                    master_host='192.168.1.101',
                     master_user='db_sync',
                     master_password='db_sync',
                     master_log_file='mysql-bin.000002',
