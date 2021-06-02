@@ -15,7 +15,7 @@ spring:
       sql:
         show: true
     datasource:
-      names: m1,m2,u
+      names: m1,m2,u0,s0 #m1,m2,u是主库里的库，s0是从库连接的是user_db库
       m1:
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
@@ -28,15 +28,26 @@ spring:
         url: jdbc:mysql://localhost:3306/order_db_2?useUnicode=true
         username: root
         password: 123456
-      u:
+      u0:
         type: com.alibaba.druid.pool.DruidDataSource
         driver-class-name: com.mysql.jdbc.Driver
         url: jdbc:mysql://localhost:3306/user_db?useUnicode=true
         username: root
         password: 123456
+      s0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3307/user_db?useUnicode=true
+        username: root
+        password: 123456
     sharding:
       #指定公共表
       broadcast-tables: t_dict
+      #主从库配置; 主库从库逻辑数据源定义: ds0为user_db
+      master-slave-rules:
+        ds0:
+          master-data-source-name: u0
+          slave-data-source-names: s0
       tables:
         t_order: #是逻辑表，不是真实的表
           #指定t_order表的主键生成策略为SNOWFLAKE，也是全局主键
@@ -56,7 +67,10 @@ spring:
               algorithm-expression: m$->{user_id % 2 +1}
 
         t_user: #是逻辑表，垂直分库配置
-          actual-data-nodes: u.t_user #因为只有一个库一张表，没有水平分库分表，可以不指定全局主键,自己生成主键ID插入
+          #下面是之前是没做主从库时配置的真实数据节点
+          #actual-data-nodes: u$->{0}.t_user #因为只有一个库一张表，没有水平分库分表，可以不指定全局主键,自己生成主键ID插入
+          #下面是主从库配置的节点,固定分配至ds0的的t_user真实表;ds0包括了u0和s0
+          actual-data-nodes: ds0.t_user
           key-generator:
             type: SNOWFLAKE
             column: user_id
@@ -64,6 +78,7 @@ spring:
             inline:
               sharding-column: user_id
               algorithm-expression: t_user
+
 
 
 

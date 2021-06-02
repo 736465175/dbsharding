@@ -16,7 +16,7 @@ public class UserTest {
     private UserDao userDao;
     @Test
     public void testInsertUser(){
-        for(int i = 1; i < 11; i++){
+        for(int i = 11; i < 15; i++){
             userDao.insertUser("李志强" + i, '1');
         }
     }
